@@ -1,0 +1,37 @@
+
+
+
+def main():
+
+    seating = []
+    get_data(seating)
+    show_seating(seating)
+
+    edit = EditSeating(selected_seating=get_request())
+    if edit.validate() == True:
+        print('ok') #placeholder
+        book_seating(edit)
+    elif edit.validate() == False:
+        print('Unavailable, please try again')
+
+
+def get_data(seating):
+    with open('chart.csv') as file:
+        reader = csv.DictReader(file)
+        for row in reader:
+            seating.append(row)
+
+def show_seating(seating):
+    tab = tabulate(seating, headers='keys', tablefmt='fancy_grid')
+    print(tab)
+
+def get_request():  
+    request = input('which seat would you like to book?:').strip().upper()
+    return request
+def book_seating(edit):
+    row, column = edit.return_groups()
+
+
+
+if __name__ == '__main__':
+    main()
