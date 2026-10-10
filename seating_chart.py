@@ -17,7 +17,6 @@ class EditSeating:
         if bruh:
             return bruh.group(1), bruh.group(2)
 
-
 def main():
 
     seating = []
@@ -42,11 +41,28 @@ def show_seating(seating):
     tab = tabulate(seating, headers='keys', tablefmt='fancy_grid')
     print(tab)
 
-def get_request():  
+def get_request():
     request = input('which seat would you like to book?:').strip().upper()
     return request
 def book_seating(edit):
     row, column = edit.return_groups()
+    df = pd.read_csv('chart.csv', index_col=0)
+    confirm = input('confirm?Y/N:').strip().upper()
+    if confirm == 'Y':
+        if df.loc[row, column] == 'X':
+            print('This seat is taken.')
+            return
+        else:
+            df.loc[row, column] = 'X'
+            df.to_csv('chart.csv')
+            view = input('view?Y/N:').strip().upper()
+            if view == 'Y':
+                print(tabulate(df, headers='keys', tablefmt='fancy_grid'))
+            else:
+                print('canceled')
+    else:
+        print('cancelled')
+
 
 
 
